@@ -1,15 +1,78 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
+import WhiteBtn from './WhiteBtn'
+import BlackBtn from './BlackBtn'
+import RedBtn from './RedBtn'
+import { white, black, gray } from '../utils/colors'
+import AddCard from './AddCard'
+import StartQuiz from './StartQuiz'
+import { deleteDeck } from '../actions/index'
+import { removeDeck } from '../utils/api'
 
-class Decks extends Component {
+class DeckDetail extends Component {
+  static navigationOptions = ({ navigation }) => {
+    const { deckId } = navigation.state.params
+    return {
+      title: deckId
+    }
+  }
+
+  deleteDeck = () => {
+    const { deckId } = this.props.navigation.state.params
+    this.props.dispatch(deleteDeck(deckId)) 
+    this.props.navigation.goBack()
+    removeDeck(deckId)
+  }
   render() {
+    const { deckId } = this.props.navigation.state.params
+    const { decks } = this.props
     return (
-     <View>
-       <Text>Deck Detail</Text>
-     </View>
+      <View style={styles.container}>
+        <Text style={styles.bigText}>{deckId}</Text>
+        <Text style={styles.smallText}>
+        {decks[deckId].cards ? `${decks[deckId].cards.length} cards` : "0 cards"}    
+        </Text>
+        <WhiteBtn
+          text="Add Card"
+          onPress={() => this.props.navigation.navigate('AddCard', { deckId })}
+        />
+        <BlackBtn
+          text="Start Quiz"
+          onPress={() => this.props.navigation.navigate('StartQuiz', { deckId })}
+        />
+        <RedBtn
+          text="Delete Deck"
+          onPress={this.deleteDeck}
+        />
+      </View>
     );
   }
 }
 
-export default connect()(EntryDetail)
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 40,
+    backgroundColor: white,
+    justifyContent: 'space-around',
+  },
+  bigText: {
+    color: black,
+    fontSize: 25,
+    textAlign: 'center'
+  },
+  smallText: {
+    color: gray,
+    fontSize: 16,
+    textAlign: 'center',
+    paddingBottom: 40,
+  },
+})
+
+function mapStateToProps(state) {
+  const decks = state.decks
+  return { decks }
+}
+
+export default connect(mapStateToProps)(DeckDetail)
