@@ -39,7 +39,7 @@ class DeckDetail extends Component {
         />
         <BlackBtn
           text="Start Quiz"
-          onPress={decks[deckId].cards? () => this.props.navigation.navigate('StartQuiz', { deckId }): () =>{}}
+          onPress={decks[deckId]? (decks[deckId].cards? () => this.props.navigation.navigate('StartQuiz', { deckId }): () =>{this.props.alert.show('Oh look, an alert!')}):() => {}}
         />
         <RedBtn
           text="Delete Deck"

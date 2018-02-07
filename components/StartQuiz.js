@@ -27,11 +27,11 @@ class StartQuiz extends Component {
   }
 
   incorrect = () => {
-    this.setState({ cardNumber: this.state.cardNumber + 1, incorrectNumber: this.state.incorrectNumber + 1 })
+    this.setState({ cardNumber: this.state.cardNumber + 1, incorrectNumber: this.state.incorrectNumber + 1, questionSide: true })
   }
 
   correct = () => {
-    this.setState({ cardNumber: this.state.cardNumber + 1, correctNumber: this.state.correctNumber + 1 })
+    this.setState({ cardNumber: this.state.cardNumber + 1, correctNumber: this.state.correctNumber + 1, questionSide: true })
   }
 
   toggleCardSide = () => {
