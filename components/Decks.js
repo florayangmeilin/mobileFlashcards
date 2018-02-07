@@ -13,7 +13,7 @@ class Decks extends Component {
       .then((decks) => dispatch(receiveDecks(decks)))
   }
   render() {
-    const { decks, navigation } = this.props
+    const { decks, navigation  } = this.props  
     return (
       <ScrollView>
         {decks && Object.keys(decks).map(

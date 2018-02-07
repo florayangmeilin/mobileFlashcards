@@ -2,6 +2,7 @@ export const ADD_DECK = 'ADD_DECK'
 export const RECEIVE_DECKS = 'RECEIVE_DECKS'
 export const DELETE_DECK = 'DELETE_DECK'
 export const ADD_CARD = 'ADD_CARD'
+export const SAVE_QUIZ_SCORE = 'SAVE_QUIZ_SCORE'
 
 export function addDeck(deck) {
   return {
@@ -25,9 +26,16 @@ export function receiveDecks(decks) {
   }
 }
 
-export function deleteDeck(deckId){
-  return{
+export function deleteDeck(deckId) {
+  return {
     type: DELETE_DECK,
     deckId,
+  }
+}
+
+export function saveQuizScore(quiz) {
+  return { 
+    type: SAVE_QUIZ_SCORE,
+    quiz,
   }
 }

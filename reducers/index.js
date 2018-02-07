@@ -3,7 +3,8 @@ import {
   ADD_DECK,
   RECEIVE_DECKS,
   DELETE_DECK,
-  ADD_CARD
+  ADD_CARD,
+  SAVE_QUIZ_SCORE
 } from '../actions'
 
 // const store = {
@@ -32,24 +33,20 @@ import {
 //     }
 //   },
 //   quizzes:
-//     [{
-//       date: '2018-1-31',
-//       detail: {
+//     {20180131:{//         
 //         deck: 'React',
 //         correct: 12,
 //         incorrect: 2,
 //         noOfCard: 14,
 //       }
 //     },
-//     {
-//       date: '2018-1-28',
-//       detail: {
-//         deck: 'Javascript',
-//         correct: 4,
-//         incorrect: 2,
-.0//       }
+//     {20180128:{//        
+//        deck: 'Javascript',
+//        correct: 4,
+//        incorrect: 2,
+//        noOfCard: 14,
 //     }
-//     ]
+//     }
 // }
 function decks(state = {}, action) {
   switch (action.type) {
@@ -81,6 +78,11 @@ function decks(state = {}, action) {
 
 function quizzes(state = [], action) {
   switch (action.type) {
+    case SAVE_QUIZ_SCORE:
+      return {
+        ...state,
+        [action.quiz.timestamp]:{...action.quiz}
+      }
     default:
       return state
   }

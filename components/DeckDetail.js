@@ -31,7 +31,7 @@ class DeckDetail extends Component {
       <View style={styles.container}>
         <Text style={styles.bigText}>{deckId}</Text>
         <Text style={styles.smallText}>
-        {decks[deckId].cards ? `${decks[deckId].cards.length} cards` : "0 cards"}    
+        {decks[deckId]? (decks[deckId].cards ? `${decks[deckId].cards.length} cards` : "0 cards"):''}    
         </Text>
         <WhiteBtn
           text="Add Card"
@@ -39,7 +39,7 @@ class DeckDetail extends Component {
         />
         <BlackBtn
           text="Start Quiz"
-          onPress={() => this.props.navigation.navigate('StartQuiz', { deckId })}
+          onPress={decks[deckId].cards? () => this.props.navigation.navigate('StartQuiz', { deckId }): () =>{}}
         />
         <RedBtn
           text="Delete Deck"
