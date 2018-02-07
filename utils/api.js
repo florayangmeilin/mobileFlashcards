@@ -1,7 +1,6 @@
 import { AsyncStorage } from 'react-native'
 
 const DECKS_STORAGE_KEY = 'decks'
-const QUIZZES_STORAGE_KEY = 'quizzes'
 
 export function saveDeckTitle(deck) {
   return AsyncStorage.mergeItem(DECKS_STORAGE_KEY, JSON.stringify({
@@ -36,8 +35,5 @@ export function addCardToDeck(deckId, card) {
       }
       AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(newData))
     })
-} 
-
-export function saveQuiz(quiz) {
-  return AsyncStorage.mergeItem(QUIZZES_STORAGE_KEY, JSON.stringify({ quiz }))
 }
+

@@ -13,7 +13,7 @@ class Decks extends Component {
       .then((decks) => dispatch(receiveDecks(decks)))
   }
   render() {
-    const { decks, navigation  } = this.props  
+    const { decks, navigation } = this.props
     return (
       <ScrollView>
         {decks && Object.keys(decks).map(
@@ -28,7 +28,7 @@ class Decks extends Component {
               <View style={styles.item} key={deck}>
                 <Text style={styles.deck} key={deck}>{deck}</Text>
                 <Text style={styles.cardcount} key={`${deck}cards`}>
-                  {decks[deck].cards ? `${decks[deck].cards.length} cards` : "0 cards"}                
+                  {decks[deck].cards ? `${decks[deck].cards.length} cards` : "0 cards"}
                 </Text>
               </View>
             </TouchableOpacity>

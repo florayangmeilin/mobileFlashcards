@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { KeyboardAvoidingView, TextInput, StyleSheet, View } from 'react-native'
+import { KeyboardAvoidingView, TextInput, StyleSheet, View, Alert } from 'react-native'
 import BlackBtn from './BlackBtn'
 import { white, gray, black } from '../utils/colors'
 import { connect } from 'react-redux'
@@ -21,17 +21,18 @@ class AddCard extends Component {
       title: 'Add Card'
     }
   }
-  submit = () => {
+  submit = () => {   
     const card = this.state
     const { deckId } = this.props.navigation.state.params 
-    this.props.dispatch(addCard(deckId,card))
-    this.setState(() => ({ question: '', answer:'' }))
-    this.toHome()   
-    addCardToDeck(deckId,card)
-  }
-
-  toHome = () => {
-    this.props.navigation.goBack()
+    
+    addCardToDeck(deckId,card).
+    then(() => {
+      this.props.dispatch(addCard(deckId,card))
+    }).
+    then(() =>{
+      this.setState(() => ({ question: '', answer:'' }))
+      this.props.navigation.goBack() 
+    })
   }
 
   render() {
@@ -58,7 +59,7 @@ class AddCard extends Component {
           />
         </View>
         <BlackBtn
-          onPress={this.submit}
+          onPress={this.state.question===''||this.state.answer==='' ? () => {Alert.alert('Both question and answer cannot be empty...' )} : this.submit}
           text="Submit" />
       </KeyboardAvoidingView>
     )

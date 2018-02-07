@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Alert } from 'react-native'
 import { connect } from 'react-redux'
-import WhiteBtn from './WhiteBtn'
+import OrangeBtn from './OrangeBtn'
 import BlackBtn from './BlackBtn'
 import RedBtn from './RedBtn'
 import { white, black, gray } from '../utils/colors'
@@ -18,11 +18,15 @@ class DeckDetail extends Component {
     }
   }
 
-  deleteDeck = () => {
+  handleDeleteDeck = () => {
     const { deckId } = this.props.navigation.state.params
-    this.props.dispatch(deleteDeck(deckId)) 
-    this.props.navigation.goBack()
-    removeDeck(deckId)
+    removeDeck(deckId).
+      then(() => {
+        this.props.dispatch(deleteDeck(deckId))
+      }).
+      then(() => {
+        this.props.navigation.navigate('Home', {})
+      })
   }
   render() {
     const { deckId } = this.props.navigation.state.params
@@ -31,19 +35,19 @@ class DeckDetail extends Component {
       <View style={styles.container}>
         <Text style={styles.bigText}>{deckId}</Text>
         <Text style={styles.smallText}>
-        {decks[deckId]? (decks[deckId].cards ? `${decks[deckId].cards.length} cards` : "0 cards"):''}    
+          {decks[deckId] ? (decks[deckId].cards ? `${decks[deckId].cards.length} cards` : "0 cards") : ''}
         </Text>
-        <WhiteBtn
+        <OrangeBtn
           text="Add Card"
           onPress={() => this.props.navigation.navigate('AddCard', { deckId })}
         />
         <BlackBtn
           text="Start Quiz"
-          onPress={decks[deckId]? (decks[deckId].cards? () => this.props.navigation.navigate('StartQuiz', { deckId }): () =>{this.props.alert.show('Oh look, an alert!')}):() => {}}
+          onPress={decks[deckId] ? (decks[deckId].cards ? () => this.props.navigation.navigate('StartQuiz', { deckId }) : () => { Alert.alert('You need to add card first...') }) : () => { }}
         />
         <RedBtn
           text="Delete Deck"
-          onPress={this.deleteDeck}
+          onPress={this.handleDeleteDeck}
         />
       </View>
     );

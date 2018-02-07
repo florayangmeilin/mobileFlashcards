@@ -12,6 +12,7 @@ import { Provider } from 'react-redux'
 import reducers from './reducers'
 import AddCard from './components/AddCard'
 import StartQuiz from './components/StartQuiz'
+import { setLocalNotification } from './utils/helpers'
 
 function UdaciStatusBar({ backgroundColor, ...props }) {
   return (
@@ -65,7 +66,7 @@ const MainNavigator = StackNavigator({
     navigationOptions: {
       headerTintColor: white,
       headerStyle: {
-        backgroundColor: black,       
+        backgroundColor: black,
       }
     }
   },
@@ -74,7 +75,7 @@ const MainNavigator = StackNavigator({
     navigationOptions: {
       headerTintColor: white,
       headerStyle: {
-        backgroundColor: black,           
+        backgroundColor: black,
       }
     }
   },
@@ -83,14 +84,17 @@ const MainNavigator = StackNavigator({
     navigationOptions: {
       headerTintColor: white,
       headerStyle: {
-        backgroundColor: black,           
+        backgroundColor: black,
       }
     }
   },
 })
 
 
-export default class App extends React.Component { 
+export default class App extends React.Component {
+  componentDidMount() {
+    setLocalNotification()
+  }
   render() {
     return (
       <Provider store={createStore(reducers)}>

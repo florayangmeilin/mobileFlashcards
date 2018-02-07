@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TouchableOpacity, Text, StyleSheet, Platform, TextInput, KeyboardAvoidingView } from 'react-native'
+import { View, TouchableOpacity, Text, StyleSheet, Platform, TextInput, KeyboardAvoidingView, Alert } from 'react-native'
 import { white, black, gray } from '../utils/colors'
 import { connect } from 'react-redux'
 import { addDeck } from '../actions/index'
@@ -15,20 +15,19 @@ class AddDeck extends Component {
     };
   }
   submit = () => {
-    const { name } = this.state  
-    const deck = { title: name }   
-    this.props.dispatch(addDeck(deck))   
-
-    this.setState(() => ({ name: '' }))
-
-    this.toHome()   
-    saveDeckTitle(deck)
-
+    const { name  } = this.state 
+    const deck = { title: name }
+    saveDeckTitle(deck).
+    then(() => this.props.dispatch(addDeck(deck))).
+    then(() => {
+      this.setState(() => ({ name: '' }))
+      this.props.navigation.navigate('DeckDetail', { deckId: name })
+    })   
   }
-  toHome = () => {
-    this.props.navigation.dispatch(NavigationActions.back({ key: 'AddDeck' }))
-  }
-  render() {
+ 
+  render() {   
+    const { name } = this.state
+    const { decks } = this.props
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <Text style={styles.question}>What is the title of your new deck?</Text>
@@ -37,14 +36,14 @@ class AddDeck extends Component {
             style={styles.input}
             editable={true}
             onChangeText={(name) => this.setState({ name })}
-            value={this.state.name}
+            value={name}
             placeholderTextColor={white}
-            placeholder="Deck Title"           
+            placeholder="Deck Title"
           />
         </View>
         <BlackBtn
-          onPress={this.submit}
-          text="Submit" />
+          onPress={name ==='' ? () => {Alert.alert('Deck name cannot be empty...' )} : decks[name] && name=== decks[name].title?  () => {Alert.alert('Deck name already exist...' )}: this.submit}
+          text="Create Deck" />
       </KeyboardAvoidingView>
     )
   }
@@ -71,4 +70,9 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect()(AddDeck)
+function mapStateToProps(state) {
+  const decks = state.decks
+  return { decks }
+}
+
+export default connect(mapStateToProps)(AddDeck)

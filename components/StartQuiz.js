@@ -6,8 +6,7 @@ import { red, white, black } from '../utils/colors'
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
 import BlackBtn from './BlackBtn'
-import { saveQuizScore } from '../actions'
-import { saveQuiz } from '../utils/api'
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
 
 class StartQuiz extends Component {
   constructor(props) {
@@ -38,28 +37,25 @@ class StartQuiz extends Component {
     this.setState({ questionSide: !this.state.questionSide })
   }
 
-  saveScore =() => {
-    const { deckId } = this.props.navigation.state.params
-    const { decks } = this.props   
-    const quiz = { timestamp:Date.now(),deck:deckId, correct:this.state.correctNumber, incorrect:this.state.incorrectNumber, noOfCard: decks[deckId].cards.length }
-    this.props.dispatch(saveQuizScore(quiz))
+  finishQuiz =() => {
     this.setState(() => ({ 
       cardNumber: 0,
       correctNumber: 0,
       incorrectNumber: 0,
       questionSide: true, }))
-    this.props.navigation.goBack()
-    saveQuiz(quiz)
+    this.props.navigation.goBack()  
+    clearLocalNotification()
+    .then(setLocalNotification)
   }
 
   render() {
     const { deckId } = this.props.navigation.state.params
-    const { decks, quiz } = this.props
+    const { decks  } = this.props
     const { cardNumber, questionSide, correctNumber } = this.state
     const cardTotalNumber = decks[deckId].cards.length
     const currentCard = decks[deckId].cards[cardNumber]  
     return (
-      <View style={styles.container}>
+      <View style={{flex:1}}>
         {cardTotalNumber > cardNumber ?
           <View style={styles.container}>
             <Text>
@@ -90,9 +86,9 @@ class StartQuiz extends Component {
               Score:{Math.round(correctNumber / cardTotalNumber * 100)}
               </Text>
             <BlackBtn
-              text="Save Score"
-              onPress={this.saveScore}
-            />
+              text="Back to Deck"
+              onPress={this.finishQuiz}
+            />            
           </View>
         }
       </View>

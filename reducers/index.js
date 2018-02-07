@@ -3,8 +3,7 @@ import {
   ADD_DECK,
   RECEIVE_DECKS,
   DELETE_DECK,
-  ADD_CARD,
-  SAVE_QUIZ_SCORE
+  ADD_CARD
 } from '../actions'
 
 // const store = {
@@ -48,7 +47,7 @@ import {
 //     }
 //     }
 // }
-function decks(state = {}, action) {
+function decks (state = {}, action) {
   switch (action.type) {
     case RECEIVE_DECKS:
       return {
@@ -76,19 +75,6 @@ function decks(state = {}, action) {
   }
 }
 
-function quizzes(state = [], action) {
-  switch (action.type) {
-    case SAVE_QUIZ_SCORE:
-      return {
-        ...state,
-        [action.quiz.timestamp]:{...action.quiz}
-      }
-    default:
-      return state
-  }
-}
-
 export default combineReducers({
-  decks,
-  quizzes,
+  decks
 })
