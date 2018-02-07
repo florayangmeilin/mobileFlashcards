@@ -3,5 +3,5 @@
 * Download or fork and clone below repository
     - `git clone https://github.com/florayangmeilin/mobileFlashcards.git`
     - `cd mobileFlashcards`
-    - `npm install`
-    - `npm start`
+    - `yarn install`
+    - `yarn start`
