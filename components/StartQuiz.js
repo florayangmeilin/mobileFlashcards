@@ -6,6 +6,7 @@ import { red, white, black } from '../utils/colors'
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
 import BlackBtn from './BlackBtn'
+import OrangeBtn from './OrangeBtn'
 import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
 
 class StartQuiz extends Component {
@@ -37,25 +38,37 @@ class StartQuiz extends Component {
     this.setState({ questionSide: !this.state.questionSide })
   }
 
-  finishQuiz =() => {
-    this.setState(() => ({ 
+  restartQuiz = () => {
+    this.setState(() => ({
       cardNumber: 0,
       correctNumber: 0,
       incorrectNumber: 0,
-      questionSide: true, }))
-    this.props.navigation.goBack()  
+      questionSide: true,
+    }))   
     clearLocalNotification()
-    .then(setLocalNotification)
+      .then(setLocalNotification)
+  }
+
+  finishQuiz = () => {
+    this.setState(() => ({
+      cardNumber: 0,
+      correctNumber: 0,
+      incorrectNumber: 0,
+      questionSide: true,
+    }))
+    this.props.navigation.goBack()
+    clearLocalNotification()
+      .then(setLocalNotification)
   }
 
   render() {
     const { deckId } = this.props.navigation.state.params
-    const { decks  } = this.props
+    const { decks } = this.props
     const { cardNumber, questionSide, correctNumber } = this.state
     const cardTotalNumber = decks[deckId].cards.length
-    const currentCard = decks[deckId].cards[cardNumber]  
+    const currentCard = decks[deckId].cards[cardNumber]
     return (
-      <View style={{flex:1}}>
+      <View style={{ flex: 1 }}>
         {cardTotalNumber > cardNumber ?
           <View style={styles.container}>
             <Text>
@@ -82,13 +95,17 @@ class StartQuiz extends Component {
             <Text style={styles.question}>
               You have done your quiz!
               </Text>
-              <Text style={styles.answer}>
+            <Text style={styles.answer}>
               Score:{Math.round(correctNumber / cardTotalNumber * 100)}
-              </Text>
+            </Text>
+            <OrangeBtn
+              text="Restart Quiz"
+              onPress={this.restartQuiz}
+            />
             <BlackBtn
               text="Back to Deck"
               onPress={this.finishQuiz}
-            />            
+            />
           </View>
         }
       </View>
